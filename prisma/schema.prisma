@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Wiki {
+  id          String   @id @default(uuid())
+  title       String
+  topic       String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  pages           Page[]
+  suggestedPages  SuggestedPage[]
+}
+
+model Page {
+  id        String   @id @default(uuid())
+  wikiId    String
+  title     String
+  content   String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  wiki        Wiki         @relation(fields: [wikiId], references: [id], onDelete: Cascade)
+  suggestions Suggestion[]
+
+  @@index([wikiId])
+}
+
+model SuggestedPage {
+  id        String   @id @default(uuid())
+  wikiId    String
+  title     String
+  reason    String
+  prompt    String
+  status    String   @default("pending") // pending, generating, generated, dismissed
+  createdAt DateTime @default(now())
+
+  wiki Wiki @relation(fields: [wikiId], references: [id], onDelete: Cascade)
+
+  @@index([wikiId])
+}
+
+model Suggestion {
+  id          String   @id @default(uuid())
+  pageId      String
+  description String
+  type        String   // fix, expand, rewrite, add_info
+  status      String   @default("pending") // pending, approved, rejected
+  aiGenerated Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  page Page @relation(fields: [pageId], references: [id], onDelete: Cascade)
+
+  @@index([pageId])
+}
