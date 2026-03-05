@@ -1,1 +1,46 @@
 @import "tailwindcss";
+
+body {
+  position: relative;
+  overflow-x: hidden;
+}
+
+.ambient-sphere {
+  position: fixed;
+  border-radius: 9999px;
+  pointer-events: none;
+  z-index: 0;
+  mix-blend-mode: screen;
+}
+
+.ambient-sphere--left {
+  width: clamp(18rem, 34vw, 34rem);
+  height: clamp(18rem, 34vw, 34rem);
+  top: 5rem;
+  left: -7rem;
+  opacity: 0.18;
+  filter: blur(90px);
+  background: radial-gradient(
+    circle at 32% 34%,
+    rgba(255, 230, 170, 0.45) 0%,
+    rgba(255, 146, 52, 0.28) 30%,
+    rgba(204, 70, 10, 0.16) 55%,
+    rgba(10, 2, 23, 0) 78%
+  );
+}
+
+.ambient-sphere--right {
+  width: clamp(16rem, 30vw, 30rem);
+  height: clamp(16rem, 30vw, 30rem);
+  right: -6rem;
+  bottom: -5rem;
+  opacity: 0.14;
+  filter: blur(105px);
+  background: radial-gradient(
+    circle at 65% 40%,
+    rgba(255, 206, 145, 0.36) 0%,
+    rgba(255, 136, 31, 0.22) 34%,
+    rgba(171, 56, 9, 0.14) 58%,
+    rgba(9, 2, 16, 0) 80%
+  );
+}
