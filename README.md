@@ -17,11 +17,13 @@ This app uses Prisma with SQLite (`prisma/schema.prisma`).
 
 1. In your Railway service, add a **Volume**.
 2. Mount it at `/data`.
-3. Set this environment variable:
+3. (Recommended) set this environment variable:
 
 ```bash
 DATABASE_URL=file:/data/dev.db
 ```
+
+If `DATABASE_URL` is not set, `start:railway` now defaults to `file:/data/dev.db` automatically.
 
 ### 3. Deploy
 
@@ -33,7 +35,9 @@ Railway will use:
 `start:railway` runs pending Prisma migrations and starts Next.js:
 
 ```bash
-prisma migrate deploy && next start
+export DATABASE_URL=${DATABASE_URL:-file:/data/dev.db}
+mkdir -p /data
+prisma migrate deploy && next start -H 0.0.0.0 -p ${PORT:-3000}
 ```
 
 ### 4. Open the app
